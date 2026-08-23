@@ -4,61 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Plataforma de Oposiciones</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --primary-light: #e0e7ff;
-            --secondary: #06b6d4;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #1e293b;
+            --text-main: #0f172a;
             --text-muted: #64748b;
             --success: #10b981;
-            --success-bg: #ecfdf5;
+            --success-bg: #d1fae5;
             --error: #ef4444;
-            --error-bg: #fef2f2;
+            --error-bg: #fee2e2;
             --border: #e2e8f0;
-            --radius: 16px;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            max-width: 950px; 
+            font-family: 'Poppins', sans-serif; 
+            max-width: 900px; 
             margin: 0 auto; 
-            padding: 20px 15px; 
+            padding: 15px; 
             background-color: var(--bg-color); 
             color: var(--text-main); 
-            line-height: 1.6; 
+            line-height: 1.5; 
         }
 
         .app-header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
-            border-radius: var(--radius);
+            margin-bottom: 25px;
+            padding: 30px 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
             color: white;
-            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.3);
         }
-        .app-header h1 { margin: 0; font-size: 2.1rem; font-weight: 700; letter-spacing: -0.5px; }
-        .app-header p { margin: 10px 0 0 0; font-size: 1rem; opacity: 0.9; font-weight: 300; }
+        .app-header h1 { margin: 0; font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px; }
+        .app-header p { margin: 8px 0 0 0; font-size: 0.95rem; opacity: 0.9; font-weight: 300; }
 
-        .pantalla { display: none; animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+        .pantalla { display: none; animation: fadeIn 0.3s ease-in-out; }
         .pantalla.activa { display: block; }
         @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(12px); } 
+            from { opacity: 0; transform: translateY(10px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
         .grid-familias { 
             display: grid; 
             grid-template-columns: 1fr; 
-            gap: 18px; 
-            margin-top: 20px; 
+            gap: 16px; 
+            margin-top: 15px; 
         }
         @media(min-width: 640px) {
             .grid-familias { grid-template-columns: repeat(2, 1fr); gap: 20px; }
@@ -66,148 +64,136 @@
         
         .card-familia {
             background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 26px 22px;
+            border-radius: 14px;
+            padding: 24px 20px;
             border: 1px solid var(--border);
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             text-align: left;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             position: relative;
             overflow: hidden;
         }
-        .card-familia::after {
+        .card-familia::before {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            opacity: 0;
-            transition: opacity 0.25s;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--primary);
         }
-        .card-familia:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 20px -5px rgba(0,0,0,0.08);
+        .card-familia:hover, .card-familia:active {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
             border-color: #cbd5e1;
         }
-        .card-familia:hover::after { opacity: 1; }
         
-        .card-familia-icon { font-size: 2.2rem; margin-bottom: 14px; }
-        .card-familia-title { font-size: 1.15rem; font-weight: 600; color: var(--text-main); line-height: 1.4; border: none; background: transparent; padding: 0; text-align: left; }
+        .card-familia-icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .card-familia-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); line-height: 1.3; border: none; background: transparent; padding: 0; text-align: left; }
 
         .modal-fondo {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px);
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
             display: none; justify-content: center; align-items: center; z-index: 1000;
             padding: 20px;
         }
         .modal-fondo.activo { display: flex; }
         .modal-card {
-            background: var(--card-bg); width: 100%; max-width: 480px;
-            border-radius: 24px; padding: 35px 30px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            background: var(--card-bg); width: 100%; max-width: 450px;
+            border-radius: 20px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
             text-align: center; animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-card h3 { margin-top: 0; font-size: 1.4rem; color: var(--text-main); font-weight: 700; }
-        .modal-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; }
+        .modal-card h3 { margin-top: 0; font-size: 1.3rem; color: var(--text-main); }
+        .modal-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
         
         .btn-modo {
-            display: flex; align-items: center; gap: 16px; width: 100%;
-            padding: 16px 20px; margin: 12px 0; border-radius: 14px;
+            display: flex; align-items: center; gap: 15px; width: 100%;
+            padding: 16px 20px; margin: 12px 0; border-radius: 12px;
             border: 2px solid var(--border); background: var(--bg-color);
             cursor: pointer; text-align: left; transition: all 0.2s; font-family: inherit;
         }
-        .btn-modo:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
-        .btn-modo strong { display: block; font-size: 1.05rem; color: var(--text-main); font-weight: 600; }
+        .btn-modo:hover { border-color: var(--primary); background: #f1f5f9; }
+        .btn-modo strong { display: block; font-size: 1rem; color: var(--text-main); }
         .btn-modo span { display: block; font-size: 0.85rem; color: var(--text-muted); }
 
-        .grid-temas { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 20px; }
+        .grid-temas { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; }
         
         .card-tema {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 18px 20px;
+            border-radius: 12px;
+            padding: 16px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
             text-align: left;
         }
-        .card-tema:hover { background: #f8fafc; border-color: var(--primary); transform: translateX(4px); }
+        .card-tema:hover { background: #f8fafc; border-color: var(--primary); }
         
-        .tema-info-wrapper { display: flex; align-items: center; flex: 1; min-width: 0; margin-right: 15px; }
         .tema-numero {
-            background: var(--primary-light);
-            color: var(--primary);
-            font-weight: 700;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            margin-right: 16px;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 15px;
             flex-shrink: 0;
         }
-        .tema-titulo { font-size: 0.98rem; color: var(--text-main); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .tema-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-        .badge-nota {
-            background: #f1f5f9; color: var(--text-muted); font-size: 0.8rem; font-weight: 600;
-            padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border);
-        }
-        .badge-nota.hecho { background: var(--success-bg); color: var(--success); border-color: #a7f3d0; }
+        .tema-titulo { font-size: 0.95rem; color: var(--text-main); font-weight: 500; }
 
         .btn-volver {
             background-color: transparent;
             color: var(--text-muted);
             border: 1px solid var(--border);
             border-radius: 30px;
-            padding: 9px 20px;
-            font-size: 0.92rem;
-            font-weight: 600;
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 24px;
+            gap: 6px;
+            margin-bottom: 20px;
             transition: all 0.2s;
             font-family: inherit;
         }
         .btn-volver:hover { background-color: var(--border); color: var(--text-main); }
 
-        .test-header { background: var(--card-bg); padding: 24px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
-        .test-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .badge-modo { background: var(--success-bg); color: #065f46; font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .badge-modo.prueba { background: #e0f2fe; color: #0369a1; }
+        .test-header { background: var(--card-bg); padding: 20px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .test-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .badge-modo { background: var(--success-bg); color: #065f46; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
         .badge-modo.examen { background: #fee2e2; color: #991b1b; }
         
-        .test-header h2 { font-size: 1.2rem; margin: 0 0 8px 0; color: var(--primary); font-weight: 700; }
+        .test-header h2 { font-size: 1.1rem; margin: 0 0 5px 0; color: var(--primary); }
         
-        .progress-container { width: 100%; background: var(--border); border-radius: 8px; height: 10px; margin-top: 18px; overflow: hidden; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.35s ease; border-radius: 8px; }
-        .progress-text { text-align: right; font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; font-weight: 600; }
+        .progress-container { width: 100%; background: var(--border); border-radius: 6px; height: 8px; margin-top: 15px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.3s ease; }
+        .progress-text { text-align: right; font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
 
-        .pregunta-container { background: var(--card-bg); padding: 26px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
-        .pregunta-titulo { font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main); line-height: 1.5; }
+        .pregunta-container { background: var(--card-bg); padding: 20px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .pregunta-titulo { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; color: var(--text-main); line-height: 1.4; }
         
         .opcion {
-            display: block; width: 100%; text-align: left; margin: 12px 0; padding: 16px 18px;
+            display: block; width: 100%; text-align: left; margin: 10px 0; padding: 14px 16px;
             background-color: var(--bg-color); border: 2px solid var(--border); color: var(--text-main);
-            border-radius: 12px; font-weight: 500; font-size: 0.98rem; cursor: pointer;
-            transition: all 0.2s; font-family: inherit;
+            border-radius: 10px; font-weight: 500; font-size: 0.95rem; cursor: pointer;
+            transition: all 0.15s; font-family: inherit;
         }
         .opcion:hover:not(:disabled) { background-color: #f1f5f9; border-color: var(--primary); }
         .opcion:disabled { cursor: default; }
         
         .opcion.seleccionada {
             border-color: var(--primary) !important;
-            background-color: var(--primary-light) !important;
-            color: #312e81 !important;
+            background-color: #e0e7ff !important;
+            color: #3730a3 !important;
         }
+        
         .opcion.correcta {
             background-color: var(--success-bg) !important;
             border-color: var(--success) !important;
@@ -219,42 +205,30 @@
             color: #991b1b !important;
         }
 
-        /* Estilos específicos para Modo Estudio (Pregunta / Respuesta directa) */
-        .estudio-card { background: var(--card-bg); padding: 30px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
-        .estudio-pregunta { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 15px; }
-        .estudio-respuesta-box { background: var(--success-bg); border: 1px solid #a7f3d0; padding: 18px; border-radius: 12px; color: #065f46; font-weight: 500; margin-top: 15px; }
-        .estudio-navegacion { display: flex; gap: 15px; margin-top: 20px; }
-        .estudio-navegacion button { flex: 1; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; transition: background 0.2s; }
-        .btn-anterior { background: var(--border); color: var(--text-main); }
-        .btn-anterior:hover { background: #cbd5e1; }
-        .btn-siguiente { background: var(--primary); color: white; }
-        .btn-siguiente:hover { background: var(--primary-hover); }
-
         .btn-enviar {
-            display: block; width: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none;
-            padding: 18px; border-radius: 14px; font-size: 1.05rem; font-weight: 600; cursor: pointer;
-            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4); transition: transform 0.2s, opacity 0.2s; margin-top: 25px;
+            display: block; width: 100%; background: var(--primary); color: white; border: none;
+            padding: 16px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: background 0.2s; margin-top: 20px;
             font-family: inherit;
         }
-        .btn-enviar:hover { opacity: 0.95; transform: translateY(-2px); }
+        .btn-enviar:hover { background: var(--primary-hover); }
 
-        .estadisticas { display: none; margin-top: 30px; padding: 35px 25px; background: var(--card-bg); border-radius: var(--radius); text-align: center; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .estadisticas { display: none; margin-top: 30px; padding: 30px 20px; background: var(--card-bg); border-radius: 16px; text-align: center; border: 1px solid var(--border); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
         .estadisticas.visible { display: block; animation: fadeIn 0.4s ease-in-out; }
-        .estadisticas h3 { margin-top: 0; font-size: 1.6rem; color: var(--text-main); font-weight: 700; }
+        .estadisticas h3 { margin-top: 0; font-size: 1.5rem; color: var(--text-main); }
         
         .score-circle {
             display: inline-flex; justify-content: center; align-items: center;
-            width: 120px; height: 120px; border-radius: 50%; background: var(--bg-color);
-            border: 6px solid var(--primary); font-size: 2rem; font-weight: 700;
+            width: 110px; height: 110px; border-radius: 50%; background: var(--bg-color);
+            border: 6px solid var(--primary); font-size: 1.8rem; font-weight: 700;
             color: var(--primary); margin: 20px 0;
-            box-shadow: inset 0 4px 6px rgba(0,0,0,0.05);
         }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
-        .stat-box { padding: 16px 10px; border-radius: 12px; background: var(--bg-color); border: 1px solid var(--border); }
-        .stat-box span { display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
-        .stat-box strong { display: block; font-size: 1.4rem; margin-top: 6px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .stat-box { padding: 12px 10px; border-radius: 10px; background: var(--bg-color); border: 1px solid var(--border); }
+        .stat-box span { display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .stat-box strong { display: block; font-size: 1.3rem; margin-top: 4px; }
 
-        .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; color: var(--text-main); letter-spacing: -0.5px; }
+        .section-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main); }
     </style>
 </head>
 <body>
@@ -263,7 +237,7 @@
     <div id="pantalla-familias" class="pantalla activa">
         <header class="app-header">
             <h1>Plataforma de Oposiciones</h1>
-            <p>Selecciona tu área de estudio para comenzar</p>
+            <p>Selecciona tu área de estudio</p>
         </header>
         
         <h2 class="section-title">Especialidades</h2>
@@ -284,21 +258,13 @@
     <div id="modal-modo" class="modal-fondo">
         <div class="modal-card">
             <h3 id="modal-titulo-tema">Tema</h3>
-            <p>Elige el modo en el que deseas practicar:</p>
+            <p>Elige cómo quieres realizar esta prueba:</p>
             
             <button class="btn-modo" onclick="iniciarTestSeleccionado('estudio')">
                 <div style="font-size: 1.8rem;">💡</div>
                 <div>
                     <strong>Modo Estudio</strong>
-                    <span>Visualiza pregunta y respuesta directa con navegación guiada.</span>
-                </div>
-            </button>
-            
-            <button class="btn-modo" onclick="iniciarTestSeleccionado('prueba')">
-                <div style="font-size: 1.8rem;">⚡</div>
-                <div>
-                    <strong>Modo Prueba</strong>
-                    <span>Responde y recibe corrección instantánea en cada pregunta.</span>
+                    <span>Corrección instantánea al pulsar cada respuesta. Ideal para aprender.</span>
                 </div>
             </button>
             
@@ -306,7 +272,7 @@
                 <div style="font-size: 1.8rem;">📝</div>
                 <div>
                     <strong>Modo Examen</strong>
-                    <span>Simulacro completo con guardado de nota final.</span>
+                    <span>Responde todas las preguntas libremente y obtén tu nota final al enviar.</span>
                 </div>
             </button>
 
@@ -324,10 +290,10 @@
         <div class="test-header">
             <div class="test-header-top">
                 <span id="badge-modo" class="badge-modo">Estudio</span>
-                <span id="subtitulo-test" style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">Simulacro</span>
+                <span id="subtitulo-test" style="font-size: 0.8rem; color: var(--text-muted);">archivo.csv</span>
             </div>
             <h2 id="titulo-test">Test</h2>
-            <div class="progress-container" id="contenedor-barra-progreso">
+            <div class="progress-container">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
             <div class="progress-text" id="progress-text">0 / 0 Respondidas</div>
@@ -335,14 +301,14 @@
         
         <div id="contenedor-preguntas"></div>
         
-        <button id="btn-enviar-examen" class="btn-enviar" style="display: none;" onclick="finalizarExamen()">Enviar examen y ver resultados</button>
+        <button id="btn-enviar-examen" class="btn-enviar" style="display: none;" onclick="finalizarExamen()">Enviar y ver resultados</button>
         
         <div id="panel-estadisticas" class="estadisticas">
             <h3>¡Resultados del Examen!</h3>
             <div class="score-circle">
                 <span id="score-text">0.00</span>
             </div>
-            <p id="score-comentario" style="font-weight: 600; margin: 0 0 15px 0; color: var(--text-main); font-size: 1.1rem;">¡Buen trabajo!</p>
+            <p id="score-comentario" style="font-weight: 500; margin: 0 0 15px 0; color: var(--text-main);">¡Buen trabajo!</p>
             <div class="stats-grid">
                 <div class="stat-box">
                     <span>Aciertos</span>
@@ -357,7 +323,7 @@
                     <strong id="score-blancos" style="color: var(--text-muted)">0</strong>
                 </div>
             </div>
-            <button class="btn-volver" style="margin-top: 30px; width: 100%; background: var(--primary); color: white; border: none; padding: 14px; justify-content: center; font-size: 1rem;" onclick="mostrarPantalla('temas')">
+            <button class="btn-volver" style="margin-top: 25px; width: 100%; background: var(--primary); color: white; border: none; padding: 12px; justify-content: center;" onclick="mostrarPantalla('temas')">
                 Elegir otro test
             </button>
         </div>
@@ -366,12 +332,14 @@
     <script>
         const titulosTemas = {"1_1": "Tema 1.- La Constitución española de 1978: estructura y contenido esencial. Principios Generales. La Reforma Constitucional.", "1_2": "Tema 2.- Derechos y deberes fundamentales y libertades públicas en la Constitución española. Garantías y protección. La suspensión de derechos y libertades. La defensa institucional de los derechos fundamentales: el defensor del Pueblo. el ministerio Fiscal. el tribunal Constitucional. el recurso de amparo.", "1_3": "Tema 3.- La organización territorial del estado en la Constitución: Principios generales y distribución de competencias.", "1_4": "Tema 4.- Fuentes del ordenamiento jurídico español: las Leyes. normas del ejecutivo con fuerza de ley. el reglamento. Los tratados internacionales.", "1_5": "Tema 5.- La Prevención de Riesgos Laborales: Régimen Jurídico. Política en materia de prevención de riesgos para proteger la seguridad y la salud en el trabajo. Derechos y obligaciones. Delegados de Prevención. Comités de Seguridad y Salud.", "1_6": "Tema 6.- Ley orgánica 3/2007, de 22 de marzo, para la igualdad efectiva de mujeres y hombres: el principio de igualdad y la tutela contra la discriminación. Políticas públicas para la igualdad. Los planes de igualdad en las empresas y otras medidas de promoción de la igualdad.", "1_7": "Tema 7.- Ley 4/2023, de 28 de febrero, para la igualdad real y efectiva de las personas trans y para la garantía de los derechos de las personas LGtBi: Disposiciones generales.", "1.1_1": "Tema 1.- La Constitución española de 1978: estructura y contenido esencial. Principios Generales. La Reforma Constitucional.", "1.1_2": "Tema 2.- Derechos y deberes fundamentales y libertades públicas en la Constitución española. Garantías y protección. La suspensión de derechos y libertades. La defensa institucional de los derechos fundamentales: el defensor del Pueblo. el ministerio Fiscal. el tribunal Constitucional. el recurso de amparo.", "1.1_3": "Tema 3.- La organización territorial del estado en la Constitución: Principios generales y distribución de competencias.", "1.1_4": "Tema 4.- Fuentes del ordenamiento jurídico español: las Leyes. normas del ejecutivo con fuerza de ley. el reglamento. Los tratados internacionales.", "1.1_5": "Tema 5.- La Prevención de Riesgos Laborales: Régimen Jurídico. Política en materia de prevención de riesgos para proteger la seguridad y la salud en el trabajo. Derechos y obligaciones. Delegados de Prevención. Comités de Seguridad y Salud.", "1.1_6": "Tema 6.- el derecho de acceso a la información pública. La transparencia de las administraciones Públicas y la participación ciudadana.", "1.1_7": "Tema 7.- La protección de datos de carácter personal. Régimen vigente. Principios generales.", "1.1_8": "Tema 8.- Ley orgánica 3/2007, de 22 de marzo, para la igualdad efectiva de mujeres y hombres: el principio de igualdad y la tutela contra la discriminación. Políticas públicas para la igualdad. Los planes de igualdad en las empresas y otras medidas de promoción de la igualdad.", "1.1_9": "Tema 9.- Ley 4/2023, de 28 de febrero, para la igualdad real y efectiva de las personas trans y para la garantía de los derechos de las personas LGtBi: Disposiciones generales.", "2_1": "Tema 1.- La Ley 39/2015, del Procedimiento administrativo Común de las administraciones Públicas: objeto y ámbito de aplicación. De los interesados en el procedimiento. De la actividad de las administraciones Públicas.", "2_2": "Tema 2.- el acto administrativo: Concepto y clases. Requisitos. eficacia de los actos.", "2_3": "Tema 3.- Validez e invalidez de los actos administrativos y de las disposiciones generales. nulidad y anulabilidad. La revisión de los actos administrativos en vía administrativa. Recursos administrativos.", "2_4": "Tema 4.- el procedimiento administrativo común. Garantías. Fases: iniciación, ordenación, instrucción y finalización. La tramitación simplificada. ejecución.", "2_5": "Tema 5.- el acceso electrónico de los ciudadanos a los Servicios Públicos. Derechos de los ciudadanos. Régimen jurídico de la administración electrónica. La gestión electrónica de los procedimientos. Sede electrónica. Portal de internet. Punto de acceso general electrónico de la administración. Sistemas de identificación y firma electrónica. el archivo electrónico.", "2_6": "Tema 6.- Ley de Régimen Jurídico del Sector Público: Disposiciones generales, principios de actuación y funcionamiento del sector público. abstención y recusación.", "2_7": "Tema 7.- Los contratos del Sector Público i: Delimitación de los tipos contractuales. Contratos administrativos y contratos privados. necesidad, idoneidad y duración de los contratos. Contenido mínimo. Perfección y forma del contrato. objeto, presupuesto base de licitación, valor estimado y precio del contrato.", "2_8": "Tema 8.- Los contratos del Sector Público ii: el órgano de contratación. Condiciones de aptitud para contratar. Garantías. el expediente de contratación. Procedimiento abierto, restringido y con negociación. especial referencia a la contratación en el ámbito local.", "2_9": "Tema 9.- La administración Local en la Constitución. el principio de autonomía local. Significado, contenido y límites. Clases de entidades locales. Potestades de las administraciones locales.", "2_10": "Tema 10.- La organización municipal. el alcalde, tenientes de alcalde, Pleno y Junta de Gobierno Local. Comisiones informativas.", "2_11": "Tema 11.- Régimen de sesiones y acuerdos de los órganos de gobierno local. actas, certificaciones, comunicaciones, notificaciones y publicación de los acuerdos. el registro de los documentos.", "2_12": "Tema 12.- ordenanzas y Reglamentos de las entidades Locales. Clases. Procedimiento de elaboración y aprobación.", "2_13": "Tema 13.- Formas de actividad de los entes Locales: Policía, Fomento y Servicio Público. Ley 38/2003, de 17 de noviembre, General de Subvenciones: Concepto de subvención, exclusiones. Disposiciones comunes a las subvenciones públicas. Procedimientos de concesión y gestión de las subvenciones.", "2_14": "Tema 14.- el personal al servicio de las entidades Locales. Clases y régimen jurídico. adquisición y pérdida de la relación de servicio. Conceptos generales: La oferta de empleo público, plantilla y relación de puestos de trabajo", "2_15": "Tema 15.- el estatuto Básico del empleado Público: Derechos y deberes del personal al servicio de la administración Pública. Retribuciones. Situaciones administrativas. Régimen disciplinario.", "2_16": "Tema 16.- Recursos de las Haciendas Locales. Clasificación: ingresos de Derecho Público e ingresos de Derecho Privado.", "2_17": "Tema 17.- el Presupuesto de las entidades Locales: Principios. Contenido y aprobación. modificaciones presupuestarias. ejecución y liquidación.", "2.1_1": "Tema 1.- el Procedimiento administrativo común de las administraciones Públicas: Régimen jurídico. el acto administrativo. Requisitos. motivación y forma.", "2.2_2": "Tema 2.- eficacia y validez del acto administrativo. La notificación: Contenido, plazo y práctica. La notificación defectuosa. La publicación.", "2.2_3": "Tema 3.- La invalidez del acto administrativo. Supuestos de nulidad de pleno derecho y anulabilidad. el principio de conservación del acto administrativo.", "2.2_4": "Tema 4.- La revisión de actos y disposiciones por la propia administración: Supuestos. La revocación de actos. La rectificación de errores materiales o de hecho.", "2.2_5": "Tema 5.- interesados en el procedimiento. Derechos de las personas en sus relaciones con las administraciones públicas y derechos de los interesados. Los registros administrativos. términos y plazos.", "2.2_6": "Tema 6.- Fases del procedimiento administrativo: iniciación, ordenación, instrucción y terminación del procedimiento. el silencio administrativo.", "2.2_7": "Tema 7.- Recursos administrativos: Principios generales. actos susceptibles de recurso administrativo. Reglas generales de tramitación de los recursos administrativos. Clases de recursos.", "2.2_8": "Tema 8.- La coacción administrativa: el principio de autotutela ejecutiva. La ejecución forzosa de los actos administrativos: Sus medios y principios de utilización. La vía de hecho.", "2.2_9": "Tema 9.- La potestad sancionadora: Concepto y significado. Principios del ejercicio de la potestad sancionadora. el procedimiento sancionador.", "2.2_10": "Tema 10.- La responsabilidad de la administración Pública. Principios y especialidades procedimentales. La responsabilidad patrimonial de las autoridades y personal al servicio de las administraciones Públicas.", "2.2_11": "Tema 11.- tipos de contratos del sector público y régimen jurídico. Disposiciones generales sobre la contratación del sector público. Partes en el contrato. el Órganos de contratación en la administración Local. Capacidad y solvencia de los contratistas.", "2.2_12": "Tema 12.- Preparación de los contratos por las administraciones Públicas. Contenido del contrato. Presupuesto base de licitación, valor estimado y precio del contrato. Procedimientos y formas de adjudicación de los contratos. Criterios de adjudicación. Perfeccionamiento y formalización. ejecución, modificación y extinción.", "2.2_13": "Tema 13.- Formas de acción administrativa. La actividad administrativa de prestación de servicios. el servicio público. La actividad de policía: La autorización administrativa. La declaración responsable y comunicación previa.", "2.2_14": "Tema 14.- La actividad de fomento en las entidades Locales: Las subvenciones.", "2.2_15": "Tema 15.- La administración Local en la Constitución. el principio de autonomía local. Significado, contenido y límites.", "2.2_16": "Tema 16.- Fuentes del Derecho Local. Regulación básica del estado y normativa sectorial. La potestad reglamentaria de las entidades Locales: Reglamentos y ordenanzas. Procedimiento de elaboración.", "2.2_17": "Tema 17.- La organización municipal. el alcalde, tenientes de alcalde, Pleno y Junta de Gobierno Local. Comisiones informativas.", "2.2_18": "Tema 18.- Régimen de sesiones y acuerdos de los órganos de gobierno local. actas, certificaciones, comunicaciones, notificaciones y publicación de los acuerdos. el registro de los documentos.", "2.2_19": "Tema 19.- Singularidades del procedimiento administrativo en las entidades locales. La revisión y revocación de los actos de los entes locales. tramitación de expedientes. Los interesados. abstenciones y recusaciones. Recursos administrativos y jurisdiccionales contra los actos locales.", "2.2_20": "Tema 20.- Los bienes de las entidades Locales: clases y régimen jurídico. Prerrogativas de los entes Locales respecto a sus bienes.", "2.2_21": "Tema 21.- Régimen jurídico de las Haciendas Locales. Los recursos de las Haciendas Locales. Las ordenanzas Fiscales.", "2.2_22": "Tema 22.- Los tributos locales. tasas, contribuciones especiales y precios públicos.", "2.2_23": "Tema 23.- Gestión, Recaudación e inspección de los tributos y precios públicos.", "2.2_24": "Tema 24.- el Presupuesto General de las entidades Locales. Contenido. elaboración y aprobación.", "2.2_25": "Tema 25.- La ejecución del Presupuesto de gastos: Sus fases. Los pagos a justificar y los anticipos de caja fija.", "2.2_26": "Tema 26.- el personal al servicio de las administraciones locales: clases y régimen jurídico. adquisición y pérdida de la relación de servicio. instrumentos de ordenación de los Recursos Humanos: La Relación de Puestos de trabajo, la Plantilla y la oferta de empleo Público.", "2.2_27": "Tema 27.- Derechos y deberes de los empleados públicos. Derecho a la carrera profesional y a la promoción interna. Derechos retributivos. Situaciones administrativas. Régimen disciplinario.", "2.2_28": "Tema 28.- Régimen urbanístico de la propiedad del suelo. Contenido del derecho de propiedad del suelo: facultades, deberes y cargas.", "2.2_29": "Tema 29.- instrumentos de Planeamiento general y Planeamiento de desarrollo. Las ordenanzas urbanísticas.", "2.2_30": "Tema 30.- intervención administrativa en la edificación o uso del suelo. La autorización administrativa previa a través de la licencia urbanística. La comunicación previa o la declaración responsable."};
         const familias = {"Temas comunes de Auxiliar de Administrador": ["1_1", "1_2", "1_3", "1_4", "1_5", "1_6", "1_7"], "Temas comunes de Administrador": ["1.1_1", "1.1_2", "1.1_3", "1.1_4", "1.1_5", "1.1_6", "1.1_7", "1.1_8", "1.1_9"], "Temas específicos de Auxiliar de Administrador": ["2_1", "2_2", "2_3", "2_4", "2_5", "2_6", "2_7", "2_8", "2_9", "2_10", "2_11", "2_12", "2_13", "2_14", "2_15", "2_16", "2_17"], "Temas específicos de Administrador": ["2.1_1", "2.2_2", "2.2_3", "2.2_4", "2.2_5", "2.2_6", "2.2_7", "2.2_8", "2.2_9", "2.2_10", "2.2_11", "2.2_12", "2.2_13", "2.2_14", "2.2_15", "2.2_16", "2.2_17", "2.2_18", "2.2_19", "2.2_20", "2.2_21", "2.2_22", "2.2_23", "2.2_24", "2.2_25", "2.2_26", "2.2_27", "2.2_28", "2.2_29", "2.2_30"]};
-        
+        const SEPARADOR_CSV = ','; 
+
         let archivoActivoActual = '';
         let modoActual = 'estudio';
         let preguntasCache = [];
         let respuestasUsuario = {};
-        let indiceEstudioActual = 0;
+        let totalPreguntas = 0;
+        let examenEnviado = false;
         const iconMap = ["📘", "📙", "📗", "📕"];
 
         function mostrarPantalla(pantalla) {
@@ -382,7 +350,6 @@
 
         function inicializar() {
             const contenedorFamilias = document.getElementById('lista-familias');
-            contenedorFamilias.innerHTML = '';
             let i = 0;
             for (let nombreFamilia in familias) {
                 const card = document.createElement('div');
@@ -391,7 +358,7 @@
                 
                 card.innerHTML = `
                     <div class="card-familia-icon">${icon}</div>
-                    <div class="card-familia-title">${nombreFamilia}</div>
+                    <button class="card-familia-title">${nombreFamilia}</button>
                 `;
                 card.onclick = () => cargarTemas(nombreFamilia);
                 contenedorFamilias.appendChild(card);
@@ -411,27 +378,12 @@
                 const regex = /^(tema \d+\.-|tema \d+\.-|Tema \d+\.-|Tema \d+:\s*)(.*)/i;
                 const match = textoCompleto.match(regex);
                 
-                let tituloVisual = textoCompleto;
-                let numVisual = `Tema`;
                 if(match) {
-                    numVisual = `Tema ${match[1].replace('.-','').replace(':','').trim().replace(/tema /i, '')}`;
-                    tituloVisual = match[2];
+                    const numTema = match[1].replace('.-','').replace(':','').trim().replace(/tema /i, '');
+                    div.innerHTML = `<div class="tema-numero">Tema ${numTema}</div> <div class="tema-titulo">${match[2]}</div>`;
+                } else {
+                    div.innerHTML = `<div class="tema-titulo">${textoCompleto}</div>`;
                 }
-
-                // Cargar nota guardada del examen si existe
-                const notaGuardada = localStorage.getItem(`examen_${archivoId}`);
-                let badgeNotaHTML = `<span class="badge-nota">Sin realizar</span>`;
-                if(notaGuardada !== null) {
-                    badgeNotaHTML = `<span class="badge-nota hecho">Examen: ${notaGuardada}</span>`;
-                }
-                
-                div.innerHTML = `
-                    <div class="tema-info-wrapper">
-                        <div class="tema-numero">${numVisual}</div> 
-                        <div class="tema-titulo">${tituloVisual}</div>
-                    </div>
-                    <div class="tema-meta">${badgeNotaHTML}</div>
-                `;
                 
                 div.onclick = () => abrirModalModo(archivoId, textoCompleto);
                 contenedorTemas.appendChild(div);
@@ -455,192 +407,198 @@
             modoActual = modo;
             
             const badge = document.getElementById('badge-modo');
-            if (modo === 'estudio') {
-                badge.textContent = 'Modo Estudio';
-                badge.className = 'badge-modo';
-            } else if (modo === 'prueba') {
-                badge.textContent = 'Modo Prueba';
-                badge.className = 'badge-modo prueba';
-            } else {
-                badge.textContent = 'Modo Examen';
-                badge.className = 'badge-modo examen';
-            }
+            badge.textContent = modo === 'estudio' ? 'Modo Estudio' : 'Modo Examen';
+            badge.className = modo === 'estudio' ? 'badge-modo' : 'badge-modo examen';
             
-            document.getElementById('titulo-test').textContent = document.getElementById('modal-titulo-tema').textContent;
-            document.getElementById('subtitulo-test').textContent = `Archivo: ${archivoActivoActual}`;
+            document.getElementById('titulo-test').textContent = titulosTemas[archivoActivoActual] || `Test`;
+            document.getElementById('subtitulo-test').textContent = `${archivoActivoActual}.csv`;
+            
+            const contenedor = document.getElementById('contenedor-preguntas');
+            contenedor.innerHTML = '<p style="text-align:center; padding: 30px; color:#64748b;">Cargando preguntas...</p>';
             
             document.getElementById('panel-estadisticas').classList.remove('visible');
             document.getElementById('btn-enviar-examen').style.display = 'none';
-            document.getElementById('contenedor-barra-progreso').style.display = 'block';
-            document.getElementById('progress-text').style.display = 'block';
             
             respuestasUsuario = {};
-            indiceEstudioActual = 0;
-            
-            await cargarPreguntasSimuladas();
+            examenEnviado = false;
             mostrarPantalla('test');
+
+            try {
+                const response = await fetch(`${archivoActivoActual}.csv`);
+                if (!response.ok) throw new Error("No se encontró el archivo");
+                const csvTexto = await response.text();
+                procesarCSV(csvTexto);
+            } catch (error) {
+                contenedor.innerHTML = `
+                    <div style="background: var(--error-bg); border: 1px solid var(--error); padding: 20px; border-radius: 12px; color: #991b1b; text-align: center;">
+                        <h3 style="margin-top:0;">Error al cargar ${archivoActivoActual}.csv</h3>
+                        <p style="font-size: 0.9rem;">Comprueba que el archivo CSV está en el servidor local junto al HTML.</p>
+                    </div>`;
+            }
         }
 
-        async function cargarPreguntasSimuladas() {
-            // Simulador de preguntas de ejemplo basadas en temarios oficiales si no hay CSV externo
-            preguntasCache = [
-                {
-                    pregunta: "¿Cuál es la estructura esencial de la Constitución española de 1978?",
-                    opciones: ["Preámbulo, título preliminar y 10 títulos", "Solo 9 títulos", "Un título preliminar y 5 títulos", "Ninguna de las anteriores es correcta"],
-                    correcta: 0
-                },
-                {
-                    pregunta: "¿Qué principio rige la actuación de la Administración Pública según la Constitución?",
-                    opciones: ["Arbitrariedad", "Eficacia, jerarquía y descentralización", "Improvisación", "Descoordinación"],
-                    correcta: 1
-                },
-                {
-                    pregunta: "¿A quién corresponde la defensa institucional del Defensor del Pueblo?",
-                    opciones: ["A los ministerios", "A las Cortes Generales", "A los ayuntamientos", "A los tribunales mercantiles"],
-                    correcta: 1
+        function procesarCSV(texto) {
+            const lineas = texto.split('\n').filter(l => l.trim() !== '');
+            preguntasCache = [];
+            
+            for (let i = 1; i < lineas.length; i++) {
+                const columnas = parseCSVLine(lineas[i]);
+                if (columnas.length >= 6) {
+                    preguntasCache.push({
+                        pregunta: columnas[0],
+                        opciones: [columnas[1], columnas[2], columnas[3], columnas[4]],
+                        correcta: parseInt(columnas[5].trim())
+                    });
                 }
-            ];
-            renderizarTest();
-        }
+            }
 
-        function renderizarTest() {
+            totalPreguntas = preguntasCache.length;
             const contenedor = document.getElementById('contenedor-preguntas');
             contenedor.innerHTML = '';
-            
-            if (modoActual === 'estudio') {
-                document.getElementById('contenedor-barra-progreso').style.display = 'none';
-                document.getElementById('progress-text').style.display = 'none';
-                renderizarModoEstudio();
+
+            if(totalPreguntas === 0) {
+                contenedor.innerHTML = '<p style="text-align:center;">El archivo CSV está vacío o sin formato válido.</p>';
                 return;
             }
 
-            preguntasCache.forEach((q, index) => {
-                const div = document.createElement('div');
-                div.className = 'pregunta-container';
-                
-                let opcionesHtml = '';
-                q.opciones.forEach((op, opIndex) => {
-                    opcionesHtml += `<button class="opcion" data-q="${index}" data-op="${opIndex}" onclick="seleccionarOpcion(${index}, ${opIndex})">${op}</button>`;
-                });
-                
-                div.innerHTML = `
-                    <div class="pregunta-titulo">${index + 1}. ${q.pregunta}</div>
-                    ${opcionesHtml}
-                `;
-                contenedor.appendChild(div);
+            preguntasCache.forEach((p, idx) => {
+                crearBloquePregunta(contenedor, idx + 1, p.pregunta, p.opciones, p.correcta);
             });
 
             if (modoActual === 'examen') {
                 document.getElementById('btn-enviar-examen').style.display = 'block';
             }
-            actualizarProgreso();
+            actualizarBarraProgreso();
         }
-
-        function renderizarModoEstudio() {
-            const contenedor = document.getElementById('contenedor-preguntas');
-            if (preguntasCache.length === 0) return;
-            
-            const q = preguntasCache[indiceEstudioActual];
-            const respuestaCorrectaTexto = q.opciones[q.correcta];
-            
-            contenedor.innerHTML = `
-                <div class="estudio-card">
-                    <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-bottom: 8px;">PREGUNTA ${indiceEstudioActual + 1} DE ${preguntasCache.length}</div>
-                    <div class="estudio-pregunta">${q.pregunta}</div>
-                    <div class="estudio-respuesta-box">
-                        <strong>Respuesta Correcta:</strong><br>${respuestaCorrectaTexto}
-                    </div>
-                    <div class="estudio-navegacion">
-                        <button class="btn-anterior" onclick="cambiarEstudio(-1)" ${indiceEstudioActual === 0 ? 'style="opacity:0.5; pointer-events:none;"' : ''}>Anterior</button>
-                        <button class="btn-siguiente" onclick="cambiarEstudio(1)" ${indiceEstudioActual === preguntasCache.length - 1 ? 'disabled style="opacity:0.5;"' : ''}>Siguiente</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function cambiarEstudio(direccion) {
-            indiceEstudioActual += direccion;
-            if (indiceEstudioActual < 0) indiceEstudioActual = 0;
-            if (indiceEstudioActual >= preguntasCache.length) indiceEstudioActual = preguntasCache.length - 1;
-            renderizarModoEstudio();
-        }
-
-        function seleccionarOpcion(qIndex, opIndex) {
-            respuestasUsuario[qIndex] = opIndex;
-            
-            const botones = document.querySelectorAll(`[data-q="${qIndex}"]`);
-            botones.forEach(btn => btn.classList.remove('seleccionada', 'correcta', 'incorrecta'));
-            
-            const btnSeleccionado = document.querySelector(`[data-q="${qIndex}"][data-op="${opIndex}"]`);
-            
-            if (modoActual === 'prueba') {
-                // Corrección instantánea en el momento
-                const q = preguntasCache[qIndex];
-                botones.forEach(btn => btn.disabled = true);
-                
-                if (opIndex === q.correcta) {
-                    btnSeleccionado.classList.add('correcta');
+        
+        function parseCSVLine(text) {
+            let ret = [], inQuote = false, value = '';
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (inQuote) {
+                    if (char === '"') {
+                        if (i < text.length - 1 && text[i+1] === '"') { value += '"'; i++; }
+                        else { inQuote = false; }
+                    } else { value += char; }
                 } else {
-                    btnSeleccionado.classList.add('incorrecta');
-                    const btnCorrecto = document.querySelector(`[data-q="${qIndex}"][data-op="${q.correcta}"]`);
-                    if (btnCorrecto) btnCorrecto.classList.add('correcta');
+                    if (char === '"') { inQuote = true; }
+                    else if (char === SEPARADOR_CSV) { ret.push(value); value = ''; }
+                    else { value += char; }
                 }
-            } else {
-                // Modo examen (solo marca selección visual)
-                if (btnSeleccionado) btnSeleccionado.classList.add('seleccionada');
             }
-            
-            actualizarProgreso();
+            ret.push(value);
+            return ret;
         }
 
-        function actualizarProgreso() {
-            const respondidas = Object.keys(respuestasUsuario).length;
-            const total = preguntasCache.length;
-            const porcentaje = (respondidas / total) * 100;
+        function crearBloquePregunta(contenedor, numPregunta, preguntaTexto, opciones, respuestaCorrecta) {
+            const div = document.createElement('div');
+            div.className = 'pregunta-container';
+            div.dataset.index = numPregunta - 1;
+
+            const titulo = document.createElement('div');
+            titulo.className = 'pregunta-titulo';
+            titulo.textContent = `${numPregunta}. ${preguntaTexto.replace(/^"|"$/g, '').trim()}`;
+            div.appendChild(titulo);
+
+            opciones.forEach((textoOpcion, optIndex) => {
+                const btnOpcion = document.createElement('button');
+                btnOpcion.className = 'opcion';
+                btnOpcion.textContent = textoOpcion.replace(/^"|"$/g, '').trim();
+                
+                btnOpcion.onclick = function() {
+                    if (examenEnviado) return;
+                    
+                    const qIdx = numPregunta - 1;
+                    const opcionElegida = optIndex + 1;
+
+                    if (modoActual === 'estudio') {
+                        const hermanos = div.querySelectorAll('.opcion');
+                        hermanos.forEach(b => b.disabled = true);
+                        
+                        if (opcionElegida === respuestaCorrecta) {
+                            this.classList.add('correcta');
+                        } else {
+                            this.classList.add('incorrecta');
+                            if(hermanos[respuestaCorrecta - 1]) hermanos[respuestaCorrecta - 1].classList.add('correcta');
+                        }
+                        respuestasUsuario[qIdx] = opcionElegida;
+                        actualizarBarraProgreso();
+
+                    } else {
+                        div.querySelectorAll('.opcion').forEach(b => b.classList.remove('seleccionada'));
+                        this.classList.add('seleccionada');
+                        respuestasUsuario[qIdx] = opcionElegida;
+                        actualizarBarraProgreso();
+                    }
+                };
+                div.appendChild(btnOpcion);
+            });
+
+            contenedor.appendChild(div);
+        }
+
+        function actualizarBarraProgreso() {
+            const bar = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const respondidasCount = Object.keys(respuestasUsuario).length;
             
-            document.getElementById('progress-bar').style.width = `${porcentaje}%`;
-            document.getElementById('progress-text').textContent = `${respondidas} / ${total} Respondidas`;
+            if (totalPreguntas === 0) return;
+            
+            const porcentaje = (respondidasCount / totalPreguntas) * 100;
+            bar.style.width = `${porcentaje}%`;
+            text.textContent = `${respondidasCount} / ${totalPreguntas} Respondidas`;
         }
 
         function finalizarExamen() {
+            if (!confirm("¿Estás seguro de que deseas enviar el examen y ver la puntuación final?")) return;
+            
+            examenEnviado = true;
+            document.getElementById('btn-enviar-examen').style.display = 'none';
+
             let aciertos = 0;
             let fallos = 0;
             let blancos = 0;
-            
-            preguntasCache.forEach((q, index) => {
-                const respuesta = respuestasUsuario[index];
-                const botones = document.querySelectorAll(`[data-q="${index}"]`);
-                botones.forEach(btn => btn.disabled = true);
-                
-                if (respuesta === undefined) {
+
+            preguntasCache.forEach((p, idx) => {
+                const elegida = respuestasUsuario[idx];
+                const contenedorPregunta = document.querySelector(`.pregunta-container[data-index="${idx}"]`);
+                const botones = contenedorPregunta.querySelectorAll('.opcion');
+
+                botones.forEach(b => b.disabled = true);
+
+                if (elegida === undefined) {
                     blancos++;
-                } else if (respuesta === q.correcta) {
+                    if(botones[p.correcta - 1]) botones[p.correcta - 1].style.border = "2px dashed var(--success)";
+                } else if (elegida === p.correcta) {
                     aciertos++;
-                    document.querySelector(`[data-q="${index}"][data-op="${respuesta}"]`).classList.add('correcta');
+                    botones[elegida - 1].classList.add('correcta');
                 } else {
                     fallos++;
-                    document.querySelector(`[data-q="${index}"][data-op="${respuesta}"]`).classList.add('incorrecta');
-                    document.querySelector(`[data-q="${index}"][data-op="${q.correcta}"]`).classList.add('correcta');
+                    botones[elegida - 1].classList.add('incorrecta');
+                    if(botones[p.correcta - 1]) botones[p.correcta - 1].classList.add('correcta');
                 }
             });
-            
-            const notaFinal = ((aciertos * 10) / preguntasCache.length).toFixed(2);
-            
-            // Guardar localmente la puntuación del examen
-            localStorage.setItem(`examen_${archivoActivoActual}`, `${notaFinal} / 10`);
-            
-            document.getElementById('score-text').textContent = notaFinal;
+
+            let notaSobre10 = ((aciertos - (fallos / 3)) / totalPreguntas) * 10;
+            if (notaSobre10 < 0) notaSobre10 = 0;
+
+            const statsPanel = document.getElementById('panel-estadisticas');
+            statsPanel.classList.add('visible');
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+            document.getElementById('score-text').textContent = notaSobre10.toFixed(2);
             document.getElementById('score-aciertos').textContent = aciertos;
             document.getElementById('score-fallos').textContent = fallos;
             document.getElementById('score-blancos').textContent = blancos;
-            
-            document.getElementById('btn-enviar-examen').style.display = 'none';
-            document.getElementById('panel-estadisticas').classList.add('visible');
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+            const comentario = document.getElementById('score-comentario');
+            if (notaSobre10 >= 9) comentario.textContent = "🏆 ¡Excelente preparación!";
+            else if (notaSobre10 >= 7) comentario.textContent = "👏 ¡Muy buen resultado, sigue así!";
+            else if (notaSobre10 >= 5) comentario.textContent = "👍 ¡Aprobado raspado, repasa algunos conceptos!";
+            else comentario.textContent = "📚 ¡Necesitas repasar más este tema!";
         }
 
-        // Inicializar la app al cargar
-        window.onload = inicializar;
+        inicializar();
     </script>
 </body>
 </html>
