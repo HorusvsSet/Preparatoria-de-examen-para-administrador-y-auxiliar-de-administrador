@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Tests</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f5f7fa; color: #333; }
+        h1, h2, h3 { color: #2c3e50; }
+        .pantalla { display: none; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .pantalla.activa { display: block; }
+        .grid-botones { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        button { padding: 12px 20px; border: none; border-radius: 6px; background-color: #3498db; color: white; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+        button:hover { background-color: #2980b9; }
+        .btn-volver { background-color: #7f8c8d; margin-bottom: 20px; }
+        .btn-volver:hover { background-color: #636e72; }
+        
+        /* Estilos del Test */
+        .pregunta-container { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        .opcion { display: block; width: 100%; text-align: left; margin: 8px 0; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; color: #333; }
+        .opcion:hover:not(:disabled) { background-color: #e9ecef; }
+        .opcion.correcta { background-color: #d4edda !important; border-color: #c3e6cb !important; color: #155724 !important; }
+        .opcion.incorrecta { background-color: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24 !important; }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA 1: Selección de Familia -->
+    <div id="pantalla-familias" class="pantalla activa">
+        <h1>Selecciona una familia de tests</h1>
+        <div class="grid-botones" id="lista-familias"></div>
+    </div>
+
+    <!-- PANTALLA 2: Selección de Tema -->
+    <div id="pantalla-temas" class="pantalla">
+        <button class="btn-volver" onclick="mostrarPantalla('familias')">← Volver a familias</button>
+        <h2 id="titulo-familia-seleccionada">Temas</h2>
+        <div class="grid-botones" id="lista-temas"></div>
+    </div>
+
+    <!-- PANTALLA 3: El Test -->
+    <div id="pantalla-test" class="pantalla">
+        <button class="btn-volver" onclick="mostrarPantalla('temas')">← Volver a temas</button>
+        <h2 id="titulo-test">Test</h2>
+        <div id="contenedor-preguntas"></div>
+    </div>
+
+    <script>
+        // 1. DICCIONARIO DE EQUIVALENCIAS (TÍTULOS DE LOS TEMAS)
+        // Modifica estos textos con los títulos reales de tu temario
+        const titulosTemas = {
+            "1_1": "Tema 1: La Constitución Española I",
+            "1_2": "Tema 2: La Constitución Española II",
+            // ... rellena el resto de 1_X ...
+            "1.1_1": "Tema 1.1: Derecho Administrativo I",
+            // ... rellena el resto de 1.1_X ...
+            "2_1": "Tema 2.1: Gestión Financiera",
+            // ... rellena el resto de 2_X ...
+            "2.1_1": "Tema 2.1 Especial: Contratos",
+            "2.2_2": "Tema 2.2: Función Pública"
+            // ... añade todos los que necesites ...
+        };
+
+        // 2. ESTRUCTURA DE LAS FAMILIAS Y SUS ARCHIVOS
+        // Generamos los arrays de archivos automáticamente según tus indicaciones
+        const familias = {
+            "Familia 1 (1_1 a 1_7)": Array.from({length: 7}, (_, i) => `1_${i+1}`),
+            "Familia 1.1 (1.1_1 a 1.1_9)": Array.from({length: 9}, (_, i) => `1.1_${i+1}`),
+            "Familia 2 (2_1 a 2_17)": Array.from({length: 17}, (_, i) => `2_${i+1}`),
+            // Para la familia 2.x mezclada, puedes definir el array a mano:
+            "Familia 2.1 / 2.2": ["2.1_1", "2.2_2", "2.2_3", "2.2_4", "2.2_5"] // Completa hasta el 2.2_30
+        };
+
+        // SEPARADOR DEL CSV (cambia a ';' si tu excel guarda con punto y coma)
+        const SEPARADOR_CSV = ','; 
+
+        // --- LÓGICA DE NAVEGACIÓN ---
+        function mostrarPantalla(pantalla) {
+            document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+            document.getElementById(`pantalla-${pantalla}`).classList.add('activa');
+        }
+
+        // --- RENDERIZAR FAMILIAS ---
+        function inicializar() {
+            const contenedorFamilias = document.getElementById('lista-familias');
+            for (let nombreFamilia in familias) {
+                const btn = document.createElement('button');
+                btn.textContent = nombreFamilia;
+                btn.onclick = () => cargarTemas(nombreFamilia);
+                contenedorFamilias.appendChild(btn);
+            }
+        }
+
+        // --- RENDERIZAR TEMAS DE UNA FAMILIA ---
+        function cargarTemas(nombreFamilia) {
+            document.getElementById('titulo-familia-seleccionada').textContent = nombreFamilia;
+            const contenedorTemas = document.getElementById('lista-temas');
+            contenedorTemas.innerHTML = ''; // Limpiar anteriores
+
+            familias[nombreFamilia].forEach(archivoId => {
+                const btn = document.createElement('button');
+                // Si existe en el diccionario usa el título, si no, usa el nombre del archivo
+                btn.textContent = titulosTemas[archivoId] || `Tema ${archivoId}`; 
+                btn.onclick = () => cargarTest(archivoId);
+                contenedorTemas.appendChild(btn);
+            });
+
+            mostrarPantalla('temas');
+        }
+
+        // --- CARGAR Y LEER EL ARCHIVO CSV ---
+        async function cargarTest(archivoId) {
+            document.getElementById('titulo-test').textContent = titulosTemas[archivoId] || `Test ${archivoId}`;
+            const contenedor = document.getElementById('contenedor-preguntas');
+            contenedor.innerHTML = '<p>Cargando preguntas...</p>';
+            mostrarPantalla('test');
+
+            try {
+                // Se asume que los CSV están en la misma carpeta y se llaman "1_1.csv"
+                const response = await fetch(`${archivoId}.csv`);
+                if (!response.ok) throw new Error("No se encontró el archivo");
+                
+                const csvTexto = await response.text();
+                procesarCSV(csvTexto);
+            } catch (error) {
+                contenedor.innerHTML = `<p style="color:red;">Error al cargar <b>${archivoId}.csv</b>. Asegúrate de que el archivo existe y estás usando un servidor local.</p>`;
+            }
+        }
+
+        // --- PROCESAR CSV Y CREAR EL TEST ---
+        function procesarCSV(texto) {
+            const lineas = texto.split('\n').filter(linea => linea.trim() !== '');
+            const contenedor = document.getElementById('contenedor-preguntas');
+            contenedor.innerHTML = '';
+
+            // Saltamos la primera línea (i=1 en lugar de i=0) porque son los encabezados
+            for (let i = 1; i < lineas.length; i++) {
+                // Separamos por comas (o punto y coma)
+                const columnas = lineas[i].split(SEPARADOR_CSV);
+                
+                if (columnas.length >= 6) {
+                    const preguntaStr = columnas[0].trim();
+                    const opciones = [
+                        columnas[1].trim(),
+                        columnas[2].trim(),
+                        columnas[3].trim(),
+                        columnas[4].trim()
+                    ];
+                    // Aseguramos que la respuesta sea un número del 1 al 4
+                    const respuestaCorrecta = parseInt(columnas[5].trim());
+
+                    crearBloquePregunta(contenedor, i, preguntaStr, opciones, respuestaCorrecta);
+                }
+            }
+        }
+
+        function crearBloquePregunta(contenedor, numeroPregunta, preguntaTexto, opciones, respuestaCorrecta) {
+            const div = document.createElement('div');
+            div.className = 'pregunta-container';
+
+            const titulo = document.createElement('h3');
+            titulo.textContent = `${numeroPregunta}. ${preguntaTexto}`;
+            div.appendChild(titulo);
+
+            opciones.forEach((textoOpcion, index) => {
+                const btnOpcion = document.createElement('button');
+                btnOpcion.className = 'opcion';
+                btnOpcion.textContent = textoOpcion;
+                
+                btnOpcion.onclick = function() {
+                    // Bloquear todas las opciones tras pulsar
+                    const hermanos = div.querySelectorAll('.opcion');
+                    hermanos.forEach(b => b.disabled = true);
+
+                    // El index va de 0 a 3, tu respuesta va de 1 a 4. Comparamos index + 1
+                    if (index + 1 === respuestaCorrecta) {
+                        this.classList.add('correcta');
+                    } else {
+                        this.classList.add('incorrecta');
+                        // Iluminar la correcta automáticamente
+                        hermanos[respuestaCorrecta - 1].classList.add('correcta');
+                    }
+                };
+                div.appendChild(btnOpcion);
+            });
+
+            contenedor.appendChild(div);
+        }
+
+        // Arrancar la aplicación
+        inicializar();
+    </script>
+</body>
+</html>
