@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Plataforma de Oposiciones</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -21,58 +21,60 @@
             --border: #e2e8f0;
         }
 
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body { 
             font-family: 'Poppins', sans-serif; 
-            max-width: 1000px; 
+            max-width: 900px; 
             margin: 0 auto; 
-            padding: 20px; 
+            padding: 15px; 
             background-color: var(--bg-color); 
             color: var(--text-main); 
-            line-height: 1.6; 
+            line-height: 1.5; 
         }
 
-        /* Encabezado Principal */
         .app-header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 40px 20px;
+            margin-bottom: 25px;
+            padding: 30px 15px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 20px;
+            border-radius: 16px;
             color: white;
-            box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.3);
         }
-        .app-header h1 { margin: 0; font-size: 2.5rem; font-weight: 700; letter-spacing: -0.5px; }
-        .app-header p { margin: 10px 0 0 0; font-size: 1.1rem; opacity: 0.9; font-weight: 300; }
+        .app-header h1 { margin: 0; font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px; }
+        .app-header p { margin: 8px 0 0 0; font-size: 0.95rem; opacity: 0.9; font-weight: 300; }
 
-        /* Pantallas */
-        .pantalla { display: none; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .pantalla { display: none; animation: fadeIn 0.3s ease-in-out; }
         .pantalla.activa { display: block; }
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(20px); } 
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        /* Tarjetas de Familias (Grid) */
         .grid-familias { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 24px; 
-            margin-top: 20px; 
+            grid-template-columns: 1fr; 
+            gap: 16px; 
+            margin-top: 15px; 
+        }
+        @media(min-width: 640px) {
+            .grid-familias { grid-template-columns: repeat(2, 1fr); gap: 20px; }
         }
         
         .card-familia {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 30px 24px;
+            border-radius: 14px;
+            padding: 24px 20px;
             border: 1px solid var(--border);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             text-align: left;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             position: relative;
             overflow: hidden;
         }
@@ -81,95 +83,121 @@
             position: absolute;
             top: 0; left: 0; width: 4px; height: 100%;
             background: var(--primary);
-            transition: width 0.3s ease;
         }
-        .card-familia:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        .card-familia:hover, .card-familia:active {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
             border-color: #cbd5e1;
         }
-        .card-familia:hover::before { width: 8px; }
         
-        .card-familia-icon { font-size: 2rem; margin-bottom: 15px; }
-        .card-familia-title { font-size: 1.25rem; font-weight: 600; color: var(--text-main); line-height: 1.4; border: none; background: transparent; padding: 0; text-align: left; }
+        .card-familia-icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .card-familia-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); line-height: 1.3; border: none; background: transparent; padding: 0; text-align: left; }
 
-        /* Tarjetas de Temas */
-        .grid-temas { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 20px; }
+        .modal-fondo {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+            padding: 20px;
+        }
+        .modal-fondo.activo { display: flex; }
+        .modal-card {
+            background: var(--card-bg); width: 100%; max-width: 450px;
+            border-radius: 20px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            text-align: center; animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-card h3 { margin-top: 0; font-size: 1.3rem; color: var(--text-main); }
+        .modal-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+        
+        .btn-modo {
+            display: flex; align-items: center; gap: 15px; width: 100%;
+            padding: 16px 20px; margin: 12px 0; border-radius: 12px;
+            border: 2px solid var(--border); background: var(--bg-color);
+            cursor: pointer; text-align: left; transition: all 0.2s; font-family: inherit;
+        }
+        .btn-modo:hover { border-color: var(--primary); background: #f1f5f9; }
+        .btn-modo strong { display: block; font-size: 1rem; color: var(--text-main); }
+        .btn-modo span { display: block; font-size: 0.85rem; color: var(--text-muted); }
+
+        .grid-temas { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; }
         
         .card-tema {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 20px;
+            padding: 16px;
             display: flex;
             align-items: center;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
             text-align: left;
         }
-        .card-tema:hover { background: #f1f5f9; border-color: #94a3b8; transform: scale(1.01); }
+        .card-tema:hover { background: #f8fafc; border-color: var(--primary); }
         
         .tema-numero {
             background: var(--primary);
             color: white;
             font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            margin-right: 20px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 15px;
             flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
         }
-        .tema-titulo { font-size: 1rem; color: var(--text-main); font-weight: 500; }
+        .tema-titulo { font-size: 0.95rem; color: var(--text-main); font-weight: 500; }
 
-        /* Botón Volver */
         .btn-volver {
             background-color: transparent;
             color: var(--text-muted);
             border: 1px solid var(--border);
             border-radius: 30px;
-            padding: 10px 24px;
-            font-size: 0.95rem;
+            padding: 8px 18px;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 30px;
+            gap: 6px;
+            margin-bottom: 20px;
             transition: all 0.2s;
             font-family: inherit;
         }
         .btn-volver:hover { background-color: var(--border); color: var(--text-main); }
 
-        /* Interfaz del Test */
-        .test-header { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .test-header h2 { font-size: 1.5rem; margin: 0 0 10px 0; color: var(--primary); }
-        .test-header p { color: var(--text-muted); margin: 0; font-size: 0.95rem; }
+        .test-header { background: var(--card-bg); padding: 20px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .test-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .badge-modo { background: var(--success-bg); color: #065f46; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
+        .badge-modo.examen { background: #fee2e2; color: #991b1b; }
         
-        /* Barra de progreso */
-        .progress-container { width: 100%; background: var(--border); border-radius: 10px; height: 10px; margin-top: 20px; overflow: hidden; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.4s ease; }
-        .progress-text { text-align: right; font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; font-weight: 500; }
+        .test-header h2 { font-size: 1.1rem; margin: 0 0 5px 0; color: var(--primary); }
+        
+        .progress-container { width: 100%; background: var(--border); border-radius: 6px; height: 8px; margin-top: 15px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.3s ease; }
+        .progress-text { text-align: right; font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
 
-        .pregunta-container { background: var(--card-bg); padding: 35px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .pregunta-titulo { font-size: 1.2rem; font-weight: 600; margin-bottom: 25px; color: var(--text-main); line-height: 1.5; }
+        .pregunta-container { background: var(--card-bg); padding: 20px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .pregunta-titulo { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; color: var(--text-main); line-height: 1.4; }
         
         .opcion {
-            display: block; width: 100%; text-align: left; margin: 12px 0; padding: 18px 24px;
+            display: block; width: 100%; text-align: left; margin: 10px 0; padding: 14px 16px;
             background-color: var(--bg-color); border: 2px solid var(--border); color: var(--text-main);
-            border-radius: 12px; font-weight: 500; font-size: 1rem; cursor: pointer;
-            transition: all 0.2s; font-family: inherit;
-            position: relative;
+            border-radius: 10px; font-weight: 500; font-size: 0.95rem; cursor: pointer;
+            transition: all 0.15s; font-family: inherit;
         }
-        .opcion:hover:not(:disabled) { background-color: #f1f5f9; border-color: var(--primary); transform: translateX(5px); }
+        .opcion:hover:not(:disabled) { background-color: #f1f5f9; border-color: var(--primary); }
         .opcion:disabled { cursor: default; }
+        
+        .opcion.seleccionada {
+            border-color: var(--primary) !important;
+            background-color: #e0e7ff !important;
+            color: #3730a3 !important;
+        }
         
         .opcion.correcta {
             background-color: var(--success-bg) !important;
             border-color: var(--success) !important;
             color: #065f46 !important;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
         .opcion.incorrecta {
             background-color: var(--error-bg) !important;
@@ -177,24 +205,30 @@
             color: #991b1b !important;
         }
 
-        /* Resultados */
-        .estadisticas { display: none; margin-top: 40px; padding: 40px; background: var(--card-bg); border-radius: 20px; text-align: center; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        .estadisticas.visible { display: block; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .estadisticas h3 { margin-top: 0; font-size: 1.8rem; color: var(--text-main); }
+        .btn-enviar {
+            display: block; width: 100%; background: var(--primary); color: white; border: none;
+            padding: 16px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: background 0.2s; margin-top: 20px;
+            font-family: inherit;
+        }
+        .btn-enviar:hover { background: var(--primary-hover); }
+
+        .estadisticas { display: none; margin-top: 30px; padding: 30px 20px; background: var(--card-bg); border-radius: 16px; text-align: center; border: 1px solid var(--border); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+        .estadisticas.visible { display: block; animation: fadeIn 0.4s ease-in-out; }
+        .estadisticas h3 { margin-top: 0; font-size: 1.5rem; color: var(--text-main); }
         
         .score-circle {
             display: inline-flex; justify-content: center; align-items: center;
-            width: 130px; height: 130px; border-radius: 50%; background: var(--bg-color);
-            border: 8px solid var(--primary); font-size: 2.2rem; font-weight: 700;
-            color: var(--primary); margin: 25px 0; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            width: 110px; height: 110px; border-radius: 50%; background: var(--bg-color);
+            border: 6px solid var(--primary); font-size: 1.8rem; font-weight: 700;
+            color: var(--primary); margin: 20px 0;
         }
-        .stats-grid { display: flex; justify-content: center; gap: 40px; margin-top: 20px; }
-        .stat-box { padding: 15px 30px; border-radius: 12px; background: var(--bg-color); border: 1px solid var(--border); }
-        .stat-box span { display: block; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-        .stat-box strong { display: block; font-size: 1.8rem; margin-top: 5px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .stat-box { padding: 12px 10px; border-radius: 10px; background: var(--bg-color); border: 1px solid var(--border); }
+        .stat-box span { display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .stat-box strong { display: block; font-size: 1.3rem; margin-top: 4px; }
 
-        /* Utilidades */
-        .section-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-main); }
+        .section-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main); }
     </style>
 </head>
 <body>
@@ -203,33 +237,62 @@
     <div id="pantalla-familias" class="pantalla activa">
         <header class="app-header">
             <h1>Plataforma de Oposiciones</h1>
-            <p>Selecciona tu área de estudio para comenzar a practicar</p>
+            <p>Selecciona tu área de estudio</p>
         </header>
         
-        <h2 class="section-title">Especialidades Disponibles</h2>
+        <h2 class="section-title">Especialidades</h2>
         <div class="grid-familias" id="lista-familias"></div>
     </div>
 
     <!-- PANTALLA 2: Selección de Tema -->
     <div id="pantalla-temas" class="pantalla">
         <button class="btn-volver" onclick="mostrarPantalla('familias')">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Volver a Especialidades
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Especialidades
         </button>
         <h2 class="section-title" id="titulo-familia-seleccionada">Temas</h2>
         <div class="grid-temas" id="lista-temas"></div>
     </div>
 
-    <!-- PANTALLA 3: El Test -->
+    <!-- MODAL SELECCIÓN DE MODO -->
+    <div id="modal-modo" class="modal-fondo">
+        <div class="modal-card">
+            <h3 id="modal-titulo-tema">Tema</h3>
+            <p>Elige cómo quieres realizar esta prueba:</p>
+            
+            <button class="btn-modo" onclick="iniciarTestSeleccionado('estudio')">
+                <div style="font-size: 1.8rem;">💡</div>
+                <div>
+                    <strong>Modo Estudio</strong>
+                    <span>Corrección instantánea al pulsar cada respuesta. Ideal para aprender.</span>
+                </div>
+            </button>
+            
+            <button class="btn-modo" onclick="iniciarTestSeleccionado('examen')">
+                <div style="font-size: 1.8rem;">📝</div>
+                <div>
+                    <strong>Modo Examen</strong>
+                    <span>Responde todas las preguntas libremente y obtén tu nota final al enviar.</span>
+                </div>
+            </button>
+
+            <button class="btn-volver" style="width: 100%; justify-content: center; margin-top: 15px; margin-bottom: 0;" onclick="cerrarModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA 3: El Test / Examen -->
     <div id="pantalla-test" class="pantalla">
         <button class="btn-volver" onclick="mostrarPantalla('temas')">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             Volver a Temas
         </button>
         
         <div class="test-header">
+            <div class="test-header-top">
+                <span id="badge-modo" class="badge-modo">Estudio</span>
+                <span id="subtitulo-test" style="font-size: 0.8rem; color: var(--text-muted);">archivo.csv</span>
+            </div>
             <h2 id="titulo-test">Test</h2>
-            <p id="subtitulo-test">Cargando archivo...</p>
             <div class="progress-container">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
@@ -238,11 +301,14 @@
         
         <div id="contenedor-preguntas"></div>
         
+        <button id="btn-enviar-examen" class="btn-enviar" style="display: none;" onclick="finalizarExamen()">Enviar y ver resultados</button>
+        
         <div id="panel-estadisticas" class="estadisticas">
-            <h3>¡Test Finalizado!</h3>
+            <h3>¡Resultados del Examen!</h3>
             <div class="score-circle">
-                <span id="score-text">0/0</span>
+                <span id="score-text">0.00</span>
             </div>
+            <p id="score-comentario" style="font-weight: 500; margin: 0 0 15px 0; color: var(--text-main);">¡Buen trabajo!</p>
             <div class="stats-grid">
                 <div class="stat-box">
                     <span>Aciertos</span>
@@ -252,8 +318,12 @@
                     <span>Fallos</span>
                     <strong id="score-fallos" style="color: var(--error)">0</strong>
                 </div>
+                <div class="stat-box">
+                    <span>Blancos</span>
+                    <strong id="score-blancos" style="color: var(--text-muted)">0</strong>
+                </div>
             </div>
-            <button class="btn-volver" style="margin-top: 30px; background: var(--primary); color: white; border: none; padding: 15px 30px;" onclick="mostrarPantalla('temas')">
+            <button class="btn-volver" style="margin-top: 25px; width: 100%; background: var(--primary); color: white; border: none; padding: 12px; justify-content: center;" onclick="mostrarPantalla('temas')">
                 Elegir otro test
             </button>
         </div>
@@ -264,15 +334,13 @@
         const familias = {"Temas comunes de Auxiliar de Administrador": ["1_1", "1_2", "1_3", "1_4", "1_5", "1_6", "1_7"], "Temas comunes de Administrador": ["1.1_1", "1.1_2", "1.1_3", "1.1_4", "1.1_5", "1.1_6", "1.1_7", "1.1_8", "1.1_9"], "Temas específicos de Auxiliar de Administrador": ["2_1", "2_2", "2_3", "2_4", "2_5", "2_6", "2_7", "2_8", "2_9", "2_10", "2_11", "2_12", "2_13", "2_14", "2_15", "2_16", "2_17"], "Temas específicos de Administrador": ["2.1_1", "2.2_2", "2.2_3", "2.2_4", "2.2_5", "2.2_6", "2.2_7", "2.2_8", "2.2_9", "2.2_10", "2.2_11", "2.2_12", "2.2_13", "2.2_14", "2.2_15", "2.2_16", "2.2_17", "2.2_18", "2.2_19", "2.2_20", "2.2_21", "2.2_22", "2.2_23", "2.2_24", "2.2_25", "2.2_26", "2.2_27", "2.2_28", "2.2_29", "2.2_30"]};
         const SEPARADOR_CSV = ','; 
 
-        // Iconos para las familias
-        const iconMap = [
-            "📘", "📙", "📗", "📕"
-        ];
-
-        let aciertos = 0;
-        let fallos = 0;
+        let archivoActivoActual = '';
+        let modoActual = 'estudio';
+        let preguntasCache = [];
+        let respuestasUsuario = {};
         let totalPreguntas = 0;
-        let respondidas = 0;
+        let examenEnviado = false;
+        const iconMap = ["📘", "📙", "📗", "📕"];
 
         function mostrarPantalla(pantalla) {
             document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
@@ -286,14 +354,12 @@
             for (let nombreFamilia in familias) {
                 const card = document.createElement('div');
                 card.className = 'card-familia';
-                
                 const icon = iconMap[i % iconMap.length];
                 
                 card.innerHTML = `
                     <div class="card-familia-icon">${icon}</div>
                     <button class="card-familia-title">${nombreFamilia}</button>
                 `;
-                
                 card.onclick = () => cargarTemas(nombreFamilia);
                 contenedorFamilias.appendChild(card);
                 i++;
@@ -308,9 +374,7 @@
             familias[nombreFamilia].forEach(archivoId => {
                 const div = document.createElement('div');
                 div.className = 'card-tema';
-                
                 const textoCompleto = titulosTemas[archivoId] || `Tema ${archivoId}`;
-                
                 const regex = /^(tema \d+\.-|tema \d+\.-|Tema \d+\.-|Tema \d+:\s*)(.*)/i;
                 const match = textoCompleto.match(regex);
                 
@@ -321,67 +385,90 @@
                     div.innerHTML = `<div class="tema-titulo">${textoCompleto}</div>`;
                 }
                 
-                div.onclick = () => cargarTest(archivoId);
+                div.onclick = () => abrirModalModo(archivoId, textoCompleto);
                 contenedorTemas.appendChild(div);
             });
 
             mostrarPantalla('temas');
         }
 
-        async function cargarTest(archivoId) {
-            document.getElementById('titulo-test').textContent = titulosTemas[archivoId] || `Test ${archivoId}`;
-            document.getElementById('subtitulo-test').textContent = `Leyendo archivo: ${archivoId}.csv`;
+        function abrirModalModo(archivoId, tituloTema) {
+            archivoActivoActual = archivoId;
+            document.getElementById('modal-titulo-tema').textContent = tituloTema;
+            document.getElementById('modal-modo').classList.add('activo');
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal-modo').classList.remove('activo');
+        }
+
+        async function iniciarTestSeleccionado(modo) {
+            cerrarModal();
+            modoActual = modo;
+            
+            const badge = document.getElementById('badge-modo');
+            badge.textContent = modo === 'estudio' ? 'Modo Estudio' : 'Modo Examen';
+            badge.className = modo === 'estudio' ? 'badge-modo' : 'badge-modo examen';
+            
+            document.getElementById('titulo-test').textContent = titulosTemas[archivoActivoActual] || `Test`;
+            document.getElementById('subtitulo-test').textContent = `${archivoActivoActual}.csv`;
             
             const contenedor = document.getElementById('contenedor-preguntas');
-            contenedor.innerHTML = '<p style="text-align:center; padding: 40px; color:#64748b;">Cargando preguntas...</p>';
+            contenedor.innerHTML = '<p style="text-align:center; padding: 30px; color:#64748b;">Cargando preguntas...</p>';
             
             document.getElementById('panel-estadisticas').classList.remove('visible');
-            aciertos = 0; fallos = 0; respondidas = 0; totalPreguntas = 0;
-            actualizarBarraProgreso();
+            document.getElementById('btn-enviar-examen').style.display = 'none';
             
+            respuestasUsuario = {};
+            examenEnviado = false;
             mostrarPantalla('test');
 
             try {
-                const response = await fetch(`${archivoId}.csv`);
+                const response = await fetch(`${archivoActivoActual}.csv`);
                 if (!response.ok) throw new Error("No se encontró el archivo");
                 const csvTexto = await response.text();
                 procesarCSV(csvTexto);
             } catch (error) {
                 contenedor.innerHTML = `
-                    <div style="background: var(--error-bg); border: 1px solid var(--error); padding: 30px; border-radius: 12px; color: #991b1b; text-align: center;">
-                        <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-bottom:15px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        <h3 style="margin-top:0; color:#991b1b;">Error al cargar ${archivoId}.csv</h3>
-                        <p>Asegúrate de que el archivo <strong>${archivoId}.csv</strong> está en la misma carpeta que este HTML.</p>
-                        <p style="font-size: 0.9em; opacity: 0.8; margin-top: 15px;"><em>Nota: Recuerda abrir este archivo a través de un servidor local (Live Server), no con doble clic.</em></p>
+                    <div style="background: var(--error-bg); border: 1px solid var(--error); padding: 20px; border-radius: 12px; color: #991b1b; text-align: center;">
+                        <h3 style="margin-top:0;">Error al cargar ${archivoActivoActual}.csv</h3>
+                        <p style="font-size: 0.9rem;">Comprueba que el archivo CSV está en el servidor local junto al HTML.</p>
                     </div>`;
             }
         }
 
         function procesarCSV(texto) {
-            const lineas = texto.split('\n').filter(linea => linea.trim() !== '');
+            const lineas = texto.split('\n').filter(l => l.trim() !== '');
+            preguntasCache = [];
+            
+            for (let i = 1; i < lineas.length; i++) {
+                const columnas = parseCSVLine(lineas[i]);
+                if (columnas.length >= 6) {
+                    preguntasCache.push({
+                        pregunta: columnas[0],
+                        opciones: [columnas[1], columnas[2], columnas[3], columnas[4]],
+                        correcta: parseInt(columnas[5].trim())
+                    });
+                }
+            }
+
+            totalPreguntas = preguntasCache.length;
             const contenedor = document.getElementById('contenedor-preguntas');
             contenedor.innerHTML = '';
-            
-            totalPreguntas = lineas.length - 1; 
-            
-            if(totalPreguntas <= 0) {
-                contenedor.innerHTML = '<p>El archivo CSV parece estar vacío o no tiene el formato correcto.</p>';
+
+            if(totalPreguntas === 0) {
+                contenedor.innerHTML = '<p style="text-align:center;">El archivo CSV está vacío o sin formato válido.</p>';
                 return;
             }
 
-            actualizarBarraProgreso();
+            preguntasCache.forEach((p, idx) => {
+                crearBloquePregunta(contenedor, idx + 1, p.pregunta, p.opciones, p.correcta);
+            });
 
-            for (let i = 1; i < lineas.length; i++) {
-                const columnas = parseCSVLine(lineas[i]);
-                
-                if (columnas.length >= 6) {
-                    const preguntaStr = columnas[0];
-                    const opciones = [ columnas[1], columnas[2], columnas[3], columnas[4] ];
-                    const respuestaCorrecta = parseInt(columnas[5].trim());
-
-                    crearBloquePregunta(contenedor, i, preguntaStr, opciones, respuestaCorrecta);
-                }
+            if (modoActual === 'examen') {
+                document.getElementById('btn-enviar-examen').style.display = 'block';
             }
+            actualizarBarraProgreso();
         }
         
         function parseCSVLine(text) {
@@ -403,38 +490,46 @@
             return ret;
         }
 
-        function crearBloquePregunta(contenedor, numeroPregunta, preguntaTexto, opciones, respuestaCorrecta) {
+        function crearBloquePregunta(contenedor, numPregunta, preguntaTexto, opciones, respuestaCorrecta) {
             const div = document.createElement('div');
             div.className = 'pregunta-container';
+            div.dataset.index = numPregunta - 1;
 
             const titulo = document.createElement('div');
             titulo.className = 'pregunta-titulo';
-            titulo.textContent = `${numeroPregunta}. ${preguntaTexto.replace(/^"|"$/g, '').trim()}`;
+            titulo.textContent = `${numPregunta}. ${preguntaTexto.replace(/^"|"$/g, '').trim()}`;
             div.appendChild(titulo);
 
-            opciones.forEach((textoOpcion, index) => {
+            opciones.forEach((textoOpcion, optIndex) => {
                 const btnOpcion = document.createElement('button');
                 btnOpcion.className = 'opcion';
                 btnOpcion.textContent = textoOpcion.replace(/^"|"$/g, '').trim();
                 
                 btnOpcion.onclick = function() {
-                    const hermanos = div.querySelectorAll('.opcion');
-                    hermanos.forEach(b => b.disabled = true);
-                    respondidas++;
-
-                    if (index + 1 === respuestaCorrecta) {
-                        this.classList.add('correcta');
-                        aciertos++;
-                    } else {
-                        this.classList.add('incorrecta');
-                        fallos++;
-                        if(hermanos[respuestaCorrecta - 1]) {
-                            hermanos[respuestaCorrecta - 1].classList.add('correcta');
-                        }
-                    }
+                    if (examenEnviado) return;
                     
-                    actualizarBarraProgreso();
-                    actualizarMarcador();
+                    const qIdx = numPregunta - 1;
+                    const opcionElegida = optIndex + 1;
+
+                    if (modoActual === 'estudio') {
+                        const hermanos = div.querySelectorAll('.opcion');
+                        hermanos.forEach(b => b.disabled = true);
+                        
+                        if (opcionElegida === respuestaCorrecta) {
+                            this.classList.add('correcta');
+                        } else {
+                            this.classList.add('incorrecta');
+                            if(hermanos[respuestaCorrecta - 1]) hermanos[respuestaCorrecta - 1].classList.add('correcta');
+                        }
+                        respuestasUsuario[qIdx] = opcionElegida;
+                        actualizarBarraProgreso();
+
+                    } else {
+                        div.querySelectorAll('.opcion').forEach(b => b.classList.remove('seleccionada'));
+                        this.classList.add('seleccionada');
+                        respuestasUsuario[qIdx] = opcionElegida;
+                        actualizarBarraProgreso();
+                    }
                 };
                 div.appendChild(btnOpcion);
             });
@@ -445,43 +540,62 @@
         function actualizarBarraProgreso() {
             const bar = document.getElementById('progress-bar');
             const text = document.getElementById('progress-text');
+            const respondidasCount = Object.keys(respuestasUsuario).length;
             
-            if (totalPreguntas === 0) {
-                bar.style.width = '0%';
-                text.textContent = '0 / 0 Respondidas';
-                return;
-            }
+            if (totalPreguntas === 0) return;
             
-            const porcentaje = (respondidas / totalPreguntas) * 100;
+            const porcentaje = (respondidasCount / totalPreguntas) * 100;
             bar.style.width = `${porcentaje}%`;
-            text.textContent = `${respondidas} / ${totalPreguntas} Respondidas`;
+            text.textContent = `${respondidasCount} / ${totalPreguntas} Respondidas`;
         }
-        
-        function actualizarMarcador() {
-            if(respondidas > 0 && respondidas === totalPreguntas) {
-                const statsPanel = document.getElementById('panel-estadisticas');
-                statsPanel.classList.add('visible');
-                
-                document.getElementById('score-text').textContent = `${aciertos}/${totalPreguntas}`;
-                document.getElementById('score-aciertos').textContent = aciertos;
-                document.getElementById('score-fallos').textContent = fallos;
-                
-                const porcentaje = aciertos / totalPreguntas;
-                const circle = document.querySelector('.score-circle');
-                
-                if(porcentaje >= 0.8) {
-                    circle.style.borderColor = 'var(--success)';
-                    circle.style.color = 'var(--success)';
+
+        function finalizarExamen() {
+            if (!confirm("¿Estás seguro de que deseas enviar el examen y ver la puntuación final?")) return;
+            
+            examenEnviado = true;
+            document.getElementById('btn-enviar-examen').style.display = 'none';
+
+            let aciertos = 0;
+            let fallos = 0;
+            let blancos = 0;
+
+            preguntasCache.forEach((p, idx) => {
+                const elegida = respuestasUsuario[idx];
+                const contenedorPregunta = document.querySelector(`.pregunta-container[data-index="${idx}"]`);
+                const botones = contenedorPregunta.querySelectorAll('.opcion');
+
+                botones.forEach(b => b.disabled = true);
+
+                if (elegida === undefined) {
+                    blancos++;
+                    if(botones[p.correcta - 1]) botones[p.correcta - 1].style.border = "2px dashed var(--success)";
+                } else if (elegida === p.correcta) {
+                    aciertos++;
+                    botones[elegida - 1].classList.add('correcta');
+                } else {
+                    fallos++;
+                    botones[elegida - 1].classList.add('incorrecta');
+                    if(botones[p.correcta - 1]) botones[p.correcta - 1].classList.add('correcta');
                 }
-                else if(porcentaje >= 0.5) {
-                    circle.style.borderColor = '#eab308'; // Amarillo
-                    circle.style.color = '#ca8a04';
-                }
-                else {
-                    circle.style.borderColor = 'var(--error)';
-                    circle.style.color = 'var(--error)';
-                }
-            }
+            });
+
+            let notaSobre10 = ((aciertos - (fallos / 3)) / totalPreguntas) * 10;
+            if (notaSobre10 < 0) notaSobre10 = 0;
+
+            const statsPanel = document.getElementById('panel-estadisticas');
+            statsPanel.classList.add('visible');
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+            document.getElementById('score-text').textContent = notaSobre10.toFixed(2);
+            document.getElementById('score-aciertos').textContent = aciertos;
+            document.getElementById('score-fallos').textContent = fallos;
+            document.getElementById('score-blancos').textContent = blancos;
+
+            const comentario = document.getElementById('score-comentario');
+            if (notaSobre10 >= 9) comentario.textContent = "🏆 ¡Excelente preparación!";
+            else if (notaSobre10 >= 7) comentario.textContent = "👏 ¡Muy buen resultado, sigue así!";
+            else if (notaSobre10 >= 5) comentario.textContent = "👍 ¡Aprobado raspado, repasa algunos conceptos!";
+            else comentario.textContent = "📚 ¡Necesitas repasar más este tema!";
         }
 
         inicializar();
